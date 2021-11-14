@@ -1,3 +1,6 @@
+#ifndef BITS
+#define BITS
+
 struct bits {
     unsigned char* data;
     bits() {}
@@ -17,3 +20,5 @@ struct bits {
         return true;
     }
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef HUFFMAN_NODE
+#define HUFFMAN_NODE
+
 #include "bits.h"
 
 typedef struct huffman_node {
@@ -12,3 +15,5 @@ typedef struct huffman_node {
         _data = new bits(size, data);
     }
 } h_node;
+
+#endif
