@@ -29,6 +29,25 @@ h_node* p_queue::dequeue() {
     base[0] = base[size - 1];
     size--;
     // 第一个元素不断下沉
-
+    int father = 0;
+    while (2 * father + 1 < size) {
+        if (2 * father + 1 == size - 1) {
+            if (base[father]->weight > base[size - 1]->weight) {
+                std::swap(base[father], base[size - 1]);
+            }
+            break;
+        }
+        // 此时左右孩子都存在
+        if (base[father]->weight <= base[2 * father + 1]->weight &&
+            base[father]->weight <= base[2 * father + 2]->weight)
+            break;
+        if (base[2 * father + 1]->weight < base[2 * father + 2]->weight) {
+            std::swap(base[father], base[2 * father + 1]);
+            father = 2 * father + 1;
+        } else {
+            std::swap(base[father], base[2 * father + 2]);
+            father = 2 * father + 2;
+        }
+    }
     return res;
 }
