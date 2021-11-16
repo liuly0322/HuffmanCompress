@@ -1,4 +1,5 @@
 #include <iostream>
+#include "huffman.h"
 #include "p_queue.h"
 #include "read.h"
 #include "table.h"
@@ -13,13 +14,40 @@ int main(int argc, char** argv) {
         // 此时可以处理 bits
         table[bits]++;
     }
+    // 还剩一个基本单位没统计，我的建议是摆烂不压缩了
+
     // 希望已经 Hash 表统计完了？ 大概吧xd
+
+    int node_num = table.get_ele_num();  // 有多少个 Huffman 结点
+
+    // 先假设是二叉树，不补了，所有结点直接进入优先队列
+    p_queue p_queue(node_num);
+
     table.iterator_clear();
     h_node* temp;
-    while (temp = table.iterator_visit()) {
-        // 根据 temp 返回读取的字节和权
-        std::cout << temp->_data->data[0] << ' ' << temp->weight;
+    while ((temp = table.iterator_visit())) {
+        // 迭代器里遍历读出了所有的 Huffman_Node
+        p_queue.enqueue(temp);
     }
+
+    // 一次弹出 k 个，如果空了，就说明到根了
+    h_node** nodes = new h_node*[2]();
+    h_node* father;
+    while (true) {
+        for (int i = 0; i < 2; i++) {
+            nodes[i] = p_queue.dequeue();
+        }
+        father = new h_node(2, nodes);
+        if (p_queue.empty()) {
+            break;
+        }
+        p_queue.enqueue(father);
+    }
+    // 此时 Huffman 树建立完毕，father 是根结点
+    // 如果是 1 字节的默认 Huffman 压缩，应该支持打印树
+    show_huffman(father, 2);
+    // 最后摆烂没压缩的那个字符
+    std::cout << (int)bits.data[0] << ' ' << (int)bits.data[1];
     return 0;
 }
 
