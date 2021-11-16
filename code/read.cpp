@@ -32,6 +32,7 @@ int read::read_to_end() {
     }
 
     if (unit_num % 2 && buffer_flag) {
+        buffer_flag = false;
         for (int j = write_num; j; j--) {
             temp[j] = temp[j - 1];
         }
@@ -48,6 +49,11 @@ int read::read_to_end() {
         }
         if (write_num != read_num)
             return unit_num - 2 * write_num;
+        if (unit_num % 2) {
+            data->data[read_num - 1] &= 0xF0;
+            buffer = temp[read_num - 1] & 0xF;
+            buffer_flag = true;
+        }
     }
 
     if (in.peek() == EOF)
