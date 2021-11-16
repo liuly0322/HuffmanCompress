@@ -51,3 +51,7 @@ h_node* p_queue::dequeue() {
     }
     return res;
 }
+
+bool p_queue::empty() {
+	return (size == 0) ? true : false;
+}

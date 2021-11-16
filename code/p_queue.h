@@ -17,6 +17,8 @@ class p_queue {
 
     void enqueue(h_node* node);
     h_node* dequeue();
+
+	bool empty();
 };
 
 #endif
