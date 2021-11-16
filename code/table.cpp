@@ -28,10 +28,9 @@ int table::hashing(bits& data) {  // 计算哈希值
     unsigned int key = 0;
     for (int i = 0; i < unit_num; i++) {
         if (i % 2) {  // 如果是奇数
-            key += (data.data[i / 2] & (unsigned int)0xF)
-                   << (4 * (unit_num - i - 1));
+            key += (data.data[i / 2] & 0xF) << (4 * (unit_num - i - 1));
         } else {  // 如果是偶数
-            key += (((data.data[i / 2] & (unsigned int)0xF0)) >> 4)
+            key += (((data.data[i / 2] & 0xF0)) >> 4)
                    << (4 * (unit_num - i - 1));
         }
     }
