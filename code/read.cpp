@@ -28,7 +28,7 @@ int read::read_to_end() {
     for (write_num = 0; write_num < read_num; write_num++) {
         if (in.peek() == EOF)
             break;
-        in >> temp[write_num];
+        in.get((char&)temp[write_num]);
     }
 
     if (unit_num % 2 && buffer_flag) {
