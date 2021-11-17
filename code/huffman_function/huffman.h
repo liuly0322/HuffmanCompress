@@ -3,7 +3,7 @@
 #define HUFFMAN
 
 #include <fstream>
-#include "huffman_node.h"
+#include "../basic_structure/huffman_node.h"
 
 // 打印 Huffman 树
 // 只支持一字节(可以是 n 叉树)

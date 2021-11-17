@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <iostream>
-#include "bits.h"
+#include "../basic_structure/bits.h"
 
 class read {
    private:

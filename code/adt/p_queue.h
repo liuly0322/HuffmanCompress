@@ -2,7 +2,7 @@
 #define P_QUEUE
 
 #include <algorithm>  // for std::swap
-#include "huffman_node.h"
+#include "../basic_structure/huffman_node.h"
 
 // 一个优先队列
 // 目的是每次让权最小的点位于顶
@@ -18,7 +18,7 @@ class p_queue {
     void enqueue(h_node* node);
     h_node* dequeue();
 
-	bool empty();
+    bool empty();
 };
 
 #endif

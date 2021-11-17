@@ -1,10 +1,10 @@
 #include <cstdlib>
 #include <iostream>
-#include "huffman.h"
-#include "p_queue.h"
-#include "read.h"
-#include "table.h"
-#include "write.h"
+#include "adt/p_queue.h"
+#include "adt/table.h"
+#include "huffman_function/huffman.h"
+#include "io/read.h"
+#include "io/write.h"
 
 int main(int argc, char** argv) {
     int state = 0, in_index = 0, out_index = 0;
@@ -115,3 +115,10 @@ int main(int argc, char** argv) {
 
 // 下一步：
 // 再次读取文件，这次每次的 bits 转换成对应编码，然后交给 write 类写入
+// 考虑解压：解压时可以一个字节一个字节读取，所以文件头和文件末尾都可以存信息
+// 文件头可以保存 huffman 编码（听上去很合理），比如说换行结束
+// 文件末尾一个字节可以直接用来表示前面补了几个零
+// 需要的接口：read 类的重置指针到文件头，每次从 table 中查出元素后追溯出编码，
+// 追溯出编码 -- 转换成 buffer 类 -- 给 write 类处理
+// 交给 write 类正常写入，攒 buffer，攒够了就写
+// write 类还应该有个 end，把最后不足 8 位的 buffer 写入并返回补了多少个零

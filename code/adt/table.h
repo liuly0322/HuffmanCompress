@@ -1,8 +1,7 @@
 #ifndef TABLE
 #define TABLE
 
-#include "bits.h"
-#include "huffman_node.h"
+#include "../basic_structure/huffman_node.h"
 
 typedef struct table_node {
     h_node* data;
