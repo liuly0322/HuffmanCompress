@@ -21,6 +21,9 @@ void show_huffman(h_node* root, int n, int id = 0, int came_from = 0) {
         *out << "graph TD" << '\n';
     }
 
+    if (!root->children)
+        return;
+
     int id_now = ++_id;
 
     if (id)
