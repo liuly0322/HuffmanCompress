@@ -26,7 +26,8 @@ class table {
     table(int size, int n, int unit_num);
     ~table();
 
-    unsigned int& operator[](bits& data);
+    unsigned int& operator[](bits& data);  // 返回 weight 的引用
+    h_node* get_h_node(bits& data);        // 返回查找的 huffman 结点
 
     int get_ele_num();
 

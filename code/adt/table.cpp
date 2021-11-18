@@ -65,6 +65,17 @@ unsigned int& table::operator[](bits& data) {
     return table_node->data->weight;
 }
 
+// 只提供查询功能
+h_node* table::get_h_node(bits& data) {
+    int now = hashing(data);
+    for (auto p = base[now]; p; p = p->next) {
+        if (p->data->_data->equal(unit_num, data)) {
+            return p->data;
+        }
+    }
+    return nullptr;
+}
+
 int table::get_ele_num() {
     return ele_num;
 }
