@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
             compress_mode = true;
             continue;
         }
-        if (argv[i][1] == 'u') {
+        if (argv[i][1] == 'u' && argv[i][2] == 'n') {
             uncompress_mode = true;
             continue;
         }
@@ -50,11 +50,6 @@ int main(int argc, char** argv) {
 
     if (!in_index || !out_index) {
         std::cout << "请依次输入目标文件路径和生成文件路径！";
-    }
-
-    if (display_mode && unit_num != 2) {
-        std::cout << "基本压缩单位不是 1 个字节，故 Huffman 树不展示";
-        display_mode = false;
     }
 
     // 哈希表的大小根据 unit_num 确定（范围 1 - 8）
@@ -106,7 +101,7 @@ int main(int argc, char** argv) {
     // 此时 Huffman 树建立完毕，father 是根结点
 
     if (display_mode)
-        show_huffman(father, branch);
+        show_huffman(father, branch, unit_num);
 
     // 最长编码需要的数字数
     int max_code_size = get_huffman_depth(father, branch);

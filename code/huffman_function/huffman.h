@@ -8,7 +8,11 @@
 // 打印 Huffman 树
 // 只支持一字节(可以是 n 叉树)
 // 根结点被 id = 0 调用，自己 id = 1
-void show_huffman(h_node* root, int n, int id = 0, int came_from = 0) {
+void show_huffman(h_node* root,
+                  int n,
+                  int unit_num,
+                  int id = 0,
+                  int came_from = 0) {
     static int _id;
     static std::ofstream* out;
 
@@ -29,15 +33,24 @@ void show_huffman(h_node* root, int n, int id = 0, int came_from = 0) {
     if (id)
         *out << id << "--" << came_from << "---";
 
-    *out << id_now << '[' << root->weight;
-    if (root->_data)
-        *out << " c-" << (unsigned int)root->_data->data[0];
-    *out << "]\n";
+    *out << id_now << "[\"" << root->weight;
+    if (root->_data) {
+        *out << "<br>[0x";
+        for (int i = 0; i < unit_num; i++) {
+            // 读取对应位置 16 进制值
+            int hex_num = (i % 2) ? (root->_data->data[i / 2] & 0xF)
+                                  : ((root->_data->data[i / 2] & 0xF0) >> 4);
+            *out << (hex_num < 10 ? (char)('0' + hex_num)
+                                  : (char)('A' + hex_num - 10));
+        }
+        *out << ']';
+    }
+    *out << "\"]\n";
     if (root->_data)
         return;
 
     for (int i = 0; i < n; i++) {
-        show_huffman(root->children[i], n, id_now, i);
+        show_huffman(root->children[i], n, unit_num, id_now, i);
     }
     if (!id) {
         *out << "```" << '\n';
@@ -67,7 +80,7 @@ int encode_huffman(h_node* leaf, int n, bits& buffer) {
     if (!parent) {
         return 0;
     }
-    unsigned int i;
+    int i;
     for (i = 0; i < n; i++) {
         if (parent->children[i] == leaf) {
             break;
