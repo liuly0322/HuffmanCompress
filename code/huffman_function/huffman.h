@@ -46,3 +46,16 @@ void show_huffman(h_node* root, int n, int id = 0, int came_from = 0) {
 }
 
 #endif
+
+// 求 Huffman 树深度
+int get_huffman_depth(h_node* root, int n) {
+    if (!root)
+        return 0;
+    int max = 0;
+    for (int i = 0; i < n; i++) {
+        int children_depth = get_huffman_depth(root->children[i], n);
+        if (children_depth > max)
+            max = children_depth;
+    }
+    return max + 1;
+}

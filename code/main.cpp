@@ -108,6 +108,9 @@ int main(int argc, char** argv) {
     if (display_mode)
         show_huffman(father, branch);
 
+    // 最长编码需要的数字数
+    int max_code_size = get_huffman_depth(father, branch);
+
     // 最后摆烂没压缩的那个字符
     std::cout << (int)bits.data[0] << ' ' << (int)bits.data[1];
     return 0;
@@ -119,6 +122,6 @@ int main(int argc, char** argv) {
 // 文件头可以保存 huffman 编码（听上去很合理），比如说换行结束
 // 文件末尾一个字节可以直接用来表示前面补了几个零
 // 需要的接口：read 类的重置指针到文件头，每次从 table 中查出元素后追溯出编码，
-// 追溯出编码 -- 转换成 buffer 类 -- 给 write 类处理
+// 追溯出编码 -- 转换成 bits 类 -- 给 write 类处理
 // 交给 write 类正常写入，攒 buffer，攒够了就写
 // write 类还应该有个 end，把最后不足 8 位的 buffer 写入并返回补了多少个零
