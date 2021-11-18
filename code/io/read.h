@@ -18,7 +18,9 @@ class read {
    public:
     read(char* path, bits* bits, int unit_num);
     ~read();
+
     int read_to_end();  // 读取直到末尾，返回末尾有几个是空置的
+    void clear();       // 重置文件指针
 };
 
 #endif

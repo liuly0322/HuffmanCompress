@@ -60,3 +60,9 @@ int read::read_to_end() {
         return -1;
     return 0;
 }
+
+// 重置文件指针，用于再次读取文件
+void read::clear() {
+    in.clear();
+    in.seekg(0, std::ios::beg);
+}
