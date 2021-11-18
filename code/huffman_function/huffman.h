@@ -59,3 +59,25 @@ int get_huffman_depth(h_node* root, int n) {
     }
     return max + 1;
 }
+
+// 求 Huffman 编码，返回编码长度
+// 规定一个 unsigned char 恰好用来存两个数据
+int encode_huffman(h_node* leaf, int n, bits& buffer) {
+    h_node* parent = leaf->parent;
+    if (!parent) {
+        return 0;
+    }
+    unsigned int i;
+    for (i = 0; i < n; i++) {
+        if (parent->children[i] == leaf) {
+            break;
+        }
+    }
+    int parent_size = encode_huffman(parent, n, buffer);
+    if (parent_size % 2) {
+        buffer.data[parent_size / 2] += i;
+    } else {
+        buffer.data[parent_size / 2] = i << 4;
+    }
+    return parent_size + 1;
+}
