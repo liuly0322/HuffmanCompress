@@ -26,8 +26,11 @@ typedef struct huffman_node {
         weight = 0;
         children = new huffman_node*[n]();
         for (int i = 0; i < n; i++) {
+            if (!nodes[i]->weight)
+                continue;
             weight += nodes[i]->weight;
             children[i] = nodes[i];
+            nodes[i]->parent = this;
         }
     }
 } h_node;
