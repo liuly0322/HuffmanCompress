@@ -4,9 +4,9 @@
 struct bits {
     unsigned char* data;
     bits() {}
-    bits(int size) { data = new unsigned char[size]; }
+    bits(int size) { data = new unsigned char[size](); }
     bits(int size, const bits& origin) {
-        data = new unsigned char[size];
+        data = new unsigned char[size]();
         for (int i = 0; i < size; i++) {
             data[i] = origin.data[i];
         }
