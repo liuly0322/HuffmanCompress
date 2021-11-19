@@ -13,11 +13,8 @@ read::~read() {}
 // 每次读取 unit_num 个基本单位，如果需要补 0，返回补的基本单元数目
 // 返回 -1 表示正常读取完毕
 int read::read_to_end() {
-    for (int i = 0; i < (unit_num + 1) / 2; i++) {
-        data->data[i] = 0;
-    }
-
     static unsigned char temp[4];
+
     int write_num, read_num;
     if (!buffer_flag && (unit_num % 2)) {
         read_num = (unit_num + 1) / 2;
