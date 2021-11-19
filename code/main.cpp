@@ -17,9 +17,12 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
 
     read read(in, &read_buffer, unit_num);  // 对应 2 个半字节
 
-    while (!read.read_to_end()) {
+    int zero_num = 0;  // 补 0 数
+    while (!(zero_num = read.read_to_end())) {
         table[read_buffer]++;
     }
+    if (zero_num == -1)
+        zero_num = 0;
 
     int node_num = table.get_ele_num();
     int empty_node_num = (-node_num) % (branch - 1);
@@ -61,16 +64,23 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
     if (display)
         show_huffman(father, branch, unit_num);
 
-    read.clear();
-    int zero_num = 0;  // 补 0 数
     bits write_buffer(get_huffman_depth(father, branch) / 2);
-    while (!(zero_num = read.read_to_end())) {
-        int size =
-            encode_huffman(table.get_h_node(read_buffer), branch, write_buffer);
-    }
+    write write(out, &write_buffer, unit_num, branch);
 
-    // 最后摆烂没压缩的那个字符
-    std::cout << (int)read_buffer.data[0] << ' ' << (int)read_buffer.data[1];
+    write.before_head(zero_num, node_num, &read_buffer);
+
+    do {
+        temp = table.iterator_visit();
+        write.write_head(temp);
+    } while (temp);
+
+    read.clear();
+    while (!read.read_to_end()) {
+        write.write_body(
+            encode_huffman(table.get_h_node(read_buffer), branch, write_buffer),
+            false);
+    }
+    write.write_body(encode_huffman(nyt, branch, write_buffer), true);
 }
 
 void uncompress(char* in, char* out, bool display) {}
