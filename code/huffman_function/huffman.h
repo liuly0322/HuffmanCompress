@@ -34,7 +34,7 @@ void show_huffman(h_node* root,
         *out << id << "--" << came_from << "---";
 
     *out << id_now << "[\"" << root->weight;
-    if (root->_data) {
+    if (root->_data && root->children) {
         *out << "<br>[0x";
         for (int i = 0; i < unit_num; i++) {
             // 读取对应位置 16 进制值
@@ -45,8 +45,16 @@ void show_huffman(h_node* root,
         }
         *out << ']';
     }
+    if (!root->children) {
+        if (root->_data) {
+            *out << "<br>NYT";
+        } else {
+            *out << "<br>NULL";
+        }
+    }
     *out << "\"]\n";
-    if (root->_data)
+
+    if (root->_data || !root->children)
         return;
 
     for (int i = 0; i < n; i++) {
@@ -64,6 +72,8 @@ void show_huffman(h_node* root,
 int get_huffman_depth(h_node* root, int n) {
     if (!root)
         return 0;
+    if (!root->children)
+        return 1;
     int max = 0;
     for (int i = 0; i < n; i++) {
         int children_depth = get_huffman_depth(root->children[i], n);
