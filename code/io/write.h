@@ -14,8 +14,12 @@ class write {
 
     unsigned char buffer;
     int buffer_size;
+    int chunk_size;
 
     void write_num(int x);
+
+    void buffer_write(unsigned char x);
+    void buffer_append(unsigned char x);
 
    public:
     write(char* path, bits* bits, int unit_num, int branch);
