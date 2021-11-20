@@ -45,5 +45,6 @@ void write::write_body(int size, bool end) {
     // size 编码长度
     // buffer 和 buffer_size 是还没被写入的
     // 保证每次 buffer_size 都在 0 到 7 之间，满了就写入
-    // 现在情况是可以得到 huffman 编码（0到n-1的数字序列）
+    int bit_num[17] = {0,0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4};
+    // 下面依次对读入 size 个数字编码
 }
