@@ -50,4 +50,23 @@ de_read::de_read(char* path,
     }
 }
 
+void de_read::read_node(h_node* node) {
+    if (in.peek() == EOF) {
+        std::cout << "invalid file";
+        exit(0);
+    }
+    char node_num_bytes;
+    in.get(node_num_bytes);
+    node->weight = 0;
+    for (char i = 0; i < node_num_bytes; i++) {
+        if (in.peek() == EOF) {
+            std::cout << "invalid file";
+            exit(0);
+        }
+        char num_to_join;
+        in.get(num_to_join);
+        node->weight += num_to_join << 8 * (node_num_bytes - i - 1);
+    }
+}
+
 de_read::~de_read() {}

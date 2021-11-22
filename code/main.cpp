@@ -71,10 +71,9 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
 
     write.before_head(zero_num, node_num, &read_buffer);
 
-    do {
-        temp = table.iterator_visit();
+    while ((temp = table.iterator_visit())) {
         write.write_head(temp);
-    } while (temp);
+    }
 
     read.clear();
     while (!read.read_to_end()) {
@@ -93,7 +92,44 @@ void uncompress(char* in, char* out, bool display) {
 
     de_read read(in, unit_num, branch, node_num, half_zero_bits,
                  unfinished_bits);
-    // 文件头前置内容读取完毕，现在建立 Huffman 树，读取 Huffman 编码
+
+    int empty_node_num = (-node_num) % (branch - 1);
+    if (empty_node_num < 0)
+        empty_node_num += branch - 1;
+
+    // 还要包含一个逸出码 NYT 结点
+    p_queue p_queue(node_num + empty_node_num + 1);
+
+    h_node* nyt = new h_node();
+    nyt->_data = unfinished_bits;
+    p_queue.enqueue(nyt);
+
+    for (int i = 0; i < empty_node_num; i++) {
+        h_node* empty_node = new h_node();
+        p_queue.enqueue(empty_node);
+    }
+
+    for (int i = 0; i < node_num; i++) {
+        h_node* temp = new h_node(branch, (unit_num + 1) / 2);
+        read.read_node(temp);
+        p_queue.enqueue(temp);
+    }
+
+    // 由优先队列建 Huffman 树
+    h_node** nodes = new h_node*[branch]();
+    h_node* father;
+    while (true) {
+        for (int i = 0; i < branch; i++) {
+            nodes[i] = p_queue.dequeue();
+        }
+        father = new h_node(branch, nodes);
+        if (p_queue.empty()) {
+            break;
+        }
+        p_queue.enqueue(father);
+    }
+
+    // 下面进入主体译码环节
 }
 
 int main(int argc, char** argv) {

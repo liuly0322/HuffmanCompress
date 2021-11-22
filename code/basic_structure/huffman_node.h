@@ -14,6 +14,12 @@ typedef struct huffman_node {
         parent = nullptr;
         children = nullptr;
     }
+    huffman_node(int n, int size) {
+        parent = nullptr;
+        children = new huffman_node*[n]();
+        weight = 0;
+        _data = new bits(size);
+    }
     huffman_node(int n, int size, bits& data) {
         parent = nullptr;
         children = new huffman_node*[n]();

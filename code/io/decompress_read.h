@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../basic_structure/bits.h"
+#include "../basic_structure/huffman_node.h"
 
 class de_read {
    private:
@@ -18,6 +18,8 @@ class de_read {
             int& half_bits,
             bits*& unfinished);
     ~de_read();
+
+    void read_node(h_node* node);
 };
 
 #endif

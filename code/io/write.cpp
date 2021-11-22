@@ -46,10 +46,6 @@ void write::before_head(int zero_num, int node_num, bits* reserve) {
 }
 
 void write::write_head(h_node* node) {
-    if (!node) {
-        out << (unsigned char)0;
-        return;
-    }
     write_num(node->weight);
     for (int i = 0; i < (unit_num + 1) / 2; i++)
         out << node->_data->data[i];
