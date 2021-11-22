@@ -35,7 +35,7 @@ void write::buffer_write(unsigned char x) {
 
 void write::buffer_append(unsigned char x) {
     buffer_size += chunk_size;
-    buffer |= (x << (8 - chunk_size));
+    buffer += (x << (8 - chunk_size));
 }
 
 void write::before_head(int zero_num, int node_num, bits* reserve) {
