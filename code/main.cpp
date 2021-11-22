@@ -3,6 +3,8 @@
 #include "adt/p_queue.h"
 #include "adt/table.h"
 #include "huffman_function/huffman.h"
+#include "io/decompress_read.h"
+#include "io/decompress_write.h"
 #include "io/read.h"
 #include "io/write.h"
 // #define DEBUG
@@ -83,7 +85,10 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
     write.write_body(encode_huffman(nyt, branch, write_buffer), true);
 }
 
-void uncompress(char* in, char* out, bool display) {}
+void uncompress(char* in, char* out, bool display) {
+    // 解压模式
+
+}
 
 int main(int argc, char** argv) {
 #ifndef DEBUG
