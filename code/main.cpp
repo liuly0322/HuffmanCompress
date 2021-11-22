@@ -86,8 +86,14 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
 }
 
 void uncompress(char* in, char* out, bool display) {
-    // 解压模式
+    int unit_num, branch, node_num;
 
+    int half_zero_bits;
+    bits* unfinished_bits;
+
+    de_read read(in, unit_num, branch, node_num, half_zero_bits,
+                 unfinished_bits);
+    // 文件头前置内容读取完毕，现在建立 Huffman 树，读取 Huffman 编码
 }
 
 int main(int argc, char** argv) {
