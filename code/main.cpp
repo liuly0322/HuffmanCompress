@@ -35,7 +35,6 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
     p_queue p_queue(node_num + empty_node_num + 1);
 
     h_node* nyt = new h_node();
-    nyt->_data = &read_buffer;
     p_queue.enqueue(nyt);
 
     for (int i = 0; i < empty_node_num; i++) {
@@ -66,7 +65,7 @@ void compress(char* in, char* out, int branch, int unit_num, bool display) {
     if (display)
         show_huffman(father, branch, unit_num);
 
-    bits write_buffer(get_huffman_depth(father, branch) / 2);
+    bits write_buffer(get_huffman_depth(nyt) / 2);
     write write(out, &write_buffer, unit_num, branch);
 
     write.before_head(zero_num, node_num, &read_buffer);
@@ -101,7 +100,6 @@ void uncompress(char* in, char* out, bool display) {
     p_queue p_queue(node_num + empty_node_num + 1);
 
     h_node* nyt = new h_node();
-    nyt->_data = unfinished_bits;
     p_queue.enqueue(nyt);
 
     for (int i = 0; i < empty_node_num; i++) {

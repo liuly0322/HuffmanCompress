@@ -25,37 +25,31 @@ void show_huffman(h_node* root,
         *out << "graph TD" << '\n';
     }
 
-    if (!root)
-        return;
-
-    int id_now = ++_id;
+    int id_now = ++_id;  // 当前结点 id
 
     if (id)
         *out << id << "--" << came_from << "---";
 
     *out << id_now << "[\"" << root->weight;
-    if (root->_data && root->children) {
-        *out << "<br>[0x";
-        for (int i = 0; i < unit_num; i++) {
-            // 读取对应位置 16 进制值
-            int hex_num = (i % 2) ? (root->_data->data[i / 2] & 0xF)
-                                  : ((root->_data->data[i / 2] & 0xF0) >> 4);
-            *out << (hex_num < 10 ? (char)('0' + hex_num)
-                                  : (char)('A' + hex_num - 10));
-        }
-        *out << ']';
-    }
     if (!root->children) {
         if (root->_data) {
-            *out << "<br>NYT";
+            *out << "<br>[0x";
+            for (int i = 0; i < unit_num; i++) {
+                // 读取对应位置 16 进制值
+                int hex_num = (i % 2)
+                                  ? (root->_data->data[i / 2] & 0xF)
+                                  : ((root->_data->data[i / 2] & 0xF0) >> 4);
+                *out << (hex_num < 10 ? (char)('0' + hex_num)
+                                      : (char)('A' + hex_num - 10));
+            }
+            *out << ']';
         } else {
             *out << "<br>NULL";
         }
+        *out << "\"]\n";
+        return;
     }
     *out << "\"]\n";
-
-    if (root->_data || !root->children)
-        return;
 
     for (int i = 0; i < n; i++) {
         show_huffman(root->children[i], n, unit_num, id_now, i);
@@ -66,21 +60,13 @@ void show_huffman(h_node* root,
     }
 }
 
-#endif
-
-// 求 Huffman 树深度
-int get_huffman_depth(h_node* root, int n) {
-    if (!root)
-        return 0;
-    if (!root->children)
-        return 1;
-    int max = 0;
-    for (int i = 0; i < n; i++) {
-        int children_depth = get_huffman_depth(root->children[i], n);
-        if (children_depth > max)
-            max = children_depth;
-    }
-    return max + 1;
+// 求 Huffman 树深度, nyt 一定是最深层的
+int get_huffman_depth(h_node* nyt) {
+    int i;
+    h_node* parent = nyt->parent;
+    for (i = 1; parent; i++)
+        parent = parent->parent;
+    return i;
 }
 
 // 求 Huffman 编码，返回编码长度
@@ -104,3 +90,5 @@ int encode_huffman(h_node* leaf, int n, bits& buffer) {
     }
     return parent_size + 1;
 }
+
+#endif

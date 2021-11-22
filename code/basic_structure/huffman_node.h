@@ -9,20 +9,20 @@ typedef struct huffman_node {
     huffman_node* parent;
     huffman_node** children;
     huffman_node() {
-        _data = nullptr;
-        weight = 0;
         parent = nullptr;
         children = nullptr;
+        weight = 0;
+        _data = nullptr;
     }
     huffman_node(int n, int size) {
         parent = nullptr;
-        children = new huffman_node*[n]();
+        children = nullptr;
         weight = 0;
         _data = new bits(size);
     }
     huffman_node(int n, int size, bits& data) {
         parent = nullptr;
-        children = new huffman_node*[n]();
+        children = nullptr;
         weight = 0;
         _data = new bits(size, data);
     }
