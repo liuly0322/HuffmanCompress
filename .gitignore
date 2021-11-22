@@ -2,3 +2,4 @@ note.md
 .vscode/
 bin/
 resources/
+.clang-format
