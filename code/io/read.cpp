@@ -13,46 +13,55 @@ read::~read() {}
 // 每次读取 unit_num 个基本单位，如果需要补 0，返回补的基本单元数目
 // 返回 -1 表示正常读取完毕
 int read::read_to_end() {
-    static unsigned char temp[4];
+    unsigned char temp[4] = {0};
+    // 需要读入几个字节
+    int read_num = unit_num / 2;
+    if (!buffer_flag && unit_num % 2)
+        read_num++;
 
-    int write_num, read_num;
-    if (!buffer_flag && (unit_num % 2)) {
-        read_num = (unit_num + 1) / 2;
-    } else {
-        read_num = unit_num / 2;
-    }
-
+    int write_num;  // 实际写入几个字节
     for (write_num = 0; write_num < read_num; write_num++) {
         if (in.peek() == EOF)
             break;
         in.get((char&)temp[write_num]);
     }
 
-    if (unit_num % 2 && buffer_flag) {
-        buffer_flag = false;
-        for (int j = write_num; j; j--) {
-            temp[j] = temp[j - 1];
-        }
-        temp[0] = buffer;
-        for (int j = 0; j <= write_num; j++) {
-            data->data[j] = ((temp[j] & 0xF) << 4) +
-                            (j == write_num ? 0 : ((temp[j + 1] & 0xF0) >> 4));
-        }
-        if (write_num != read_num)
-            return unit_num - (2 * write_num + 1);
-    } else {
-        for (int j = 0; j < write_num; j++) {
-            data->data[j] = temp[j];
-        }
-        if (write_num != read_num)
-            return unit_num - 2 * write_num;
-        if (unit_num % 2) {
-            data->data[read_num - 1] &= 0xF0;
-            buffer = temp[read_num - 1] & 0xF;
+    // 写到 data 里
+    if (unit_num % 2) {
+        if (buffer_flag) {
+            // 需要与 buffer 合并
+            data->data[0] = (buffer << 4) + (temp[0] >> 4);
+            for (int i = 1; i <= read_num; i++) {
+                data->data[i] = (temp[i - 1] << 4) + (temp[i] >> 4);
+            }
+            buffer_flag = false;
+        } else {
+            for (int i = 0; i < read_num - 1; i++) {
+                data->data[i] = temp[i];
+            }
+            data->data[read_num - 1] = temp[read_num - 1] & 0xF0;
+            // 最后一个的后半部分给 buffer
             buffer_flag = true;
+            buffer = temp[read_num - 1] & 0xF;
+        }
+    } else {
+        for (int i = 0; i < read_num; i++) {
+            data->data[i] = temp[i];
         }
     }
 
+    if (read_num != write_num) {
+        // 计算返回值
+        if (unit_num % 2) {
+            if (buffer_flag) {
+                return (write_num - read_num) * 2;
+            } else {
+                return (write_num - read_num) * 2 - 1;
+            }
+        } else {
+            return (write_num - read_num) * 2;
+        }
+    }
     if (in.peek() == EOF)
         return -1;
     return 0;
