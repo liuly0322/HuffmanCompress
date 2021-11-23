@@ -9,6 +9,11 @@
 class de_read {
    private:
     std::ifstream in;
+    char buffer;       // 每次读入的字符
+    int buffer_point;  // 即将读取现在字符的第几位
+
+    int chunk_size;
+    int unit;
 
    public:
     de_read(char* path,
@@ -20,6 +25,7 @@ class de_read {
     ~de_read();
 
     void read_node(h_node* node);
+    int read_branch();
 };
 
 #endif

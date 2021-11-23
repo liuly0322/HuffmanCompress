@@ -127,7 +127,14 @@ void uncompress(char* in, char* out, bool display) {
         p_queue.enqueue(father);
     }
 
+    if (display)
+        show_huffman(father, branch, unit_num);
     // 下面进入主体译码环节
+    // read 类每次返回一个数字即可
+    for (int i = 0; i < 100; i++) {
+        int now = read.read_branch();
+        std::cout << now << '\n';
+    }
 }
 
 int main(int argc, char** argv) {
@@ -187,6 +194,6 @@ int main(int argc, char** argv) {
     }
 #endif
 #ifdef DEBUG
-    compress("resources/1.txt", "resources/huffman_new.md", 4, 6, true);
+    uncompress("resources/out", "resources/2.txt", true);
 #endif
 }
