@@ -129,12 +129,25 @@ void uncompress(char* in, char* out, bool display) {
 
     if (display)
         show_huffman(father, branch, unit_num);
-    // 下面进入主体译码环节
+    // 下面进入主体译码环节, 维护指针 p
+    h_node* p = father;
+    de_write write(out, unit_num);
     // read 类每次返回一个数字即可
-    for (int i = 0; i < 100; i++) {
+    while (true) {
         int now = read.read_branch();
-        std::cout << now << '\n';
+        if (p->children) {
+            p = p->children[now];
+        } else {
+            p = father->children[now];
+        }
+
+        if (!p->children) {
+            if (!p->_data)
+                break;
+            write.write_bits(p->_data);
+        }
     }
+    write.write_end(unfinished_bits, half_zero_bits);
 }
 
 int main(int argc, char** argv) {
