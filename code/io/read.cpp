@@ -62,7 +62,7 @@ int read::read_to_end() {
             return (write_num - read_num) * 2;
         }
     }
-    if (in.peek() == EOF)
+    if (in.peek() == EOF && !buffer_flag)
         return -1;
     return 0;
 }
