@@ -12,8 +12,8 @@ de_read::de_read(char* path,
         exit(0);
     }
 
-    char temp;
-    in.get(temp);
+    unsigned char temp;
+    in.get((char&)temp);
     unit_num = (temp & 0xF0) >> 4;
     unit = unit_num;
     branch = temp & 0xF;
@@ -21,7 +21,7 @@ de_read::de_read(char* path,
     int bit_num[17] = {0, 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4};
     chunk_size = bit_num[branch];
 
-    in.get(temp);
+    in.get((char&)temp);
     half_bits = temp;
 
     unfinished = new bits((unit_num + 1) / 2);
@@ -29,22 +29,22 @@ de_read::de_read(char* path,
         in.get((char&)unfinished->data[i]);
     }
 
-    in.get(temp);
+    in.get((char&)temp);
     node_num = 0;
-    for (char i = 0; i < temp; i++) {
-        char num_to_join;
-        in.get(num_to_join);
+    for (unsigned char i = 0; i < temp; i++) {
+        unsigned char num_to_join;
+        in.get((char&)num_to_join);
         node_num += num_to_join << 8 * (temp - i - 1);
     }
 }
 
 void de_read::read_node(h_node* node) {
-    char node_num_bytes;
-    in.get(node_num_bytes);
+    unsigned char node_num_bytes;
+    in.get((char&)node_num_bytes);
     node->weight = 0;
-    for (char i = 0; i < node_num_bytes; i++) {
-        char num_to_join;
-        in.get(num_to_join);
+    for (unsigned char i = 0; i < node_num_bytes; i++) {
+        unsigned char num_to_join;
+        in.get((char&)num_to_join);
         node->weight += num_to_join << 8 * (node_num_bytes - i - 1);
     }
     for (int i = 0; i < (unit + 1) / 2; i++) {
@@ -54,7 +54,7 @@ void de_read::read_node(h_node* node) {
 
 int de_read::read_branch() {
     if (buffer_point == -1) {
-        in.get(buffer);
+        in.get((char&)buffer);
         buffer_point = 0;
     }
     if (buffer_point + chunk_size < 8) {

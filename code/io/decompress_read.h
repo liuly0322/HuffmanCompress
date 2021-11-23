@@ -9,8 +9,8 @@
 class de_read {
    private:
     std::ifstream in;
-    char buffer;       // 每次读入的字符
-    int buffer_point;  // 即将读取现在字符的第几位
+    unsigned char buffer;  // 每次读入的字符
+    int buffer_point;      // 即将读取现在字符的第几位
 
     int chunk_size;
     int unit;
