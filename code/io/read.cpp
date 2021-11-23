@@ -69,6 +69,7 @@ int read::read_to_end() {
 
 // 重置文件指针，用于再次读取文件
 void read::clear() {
+    buffer_flag = false;
     in.clear();
     in.seekg(0, std::ios::beg);
 }
